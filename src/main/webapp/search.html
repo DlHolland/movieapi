@@ -1,0 +1,109 @@
+<div class="card" ng-show="showSearch" ng-init="getMovies()";
+)>
+	<div class="card-header">
+		<div class="row">
+			<div class="col-12 text-center">
+				<h4>Movie Search View</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2">
+				<button type="button" class="btn btn-success" ng-click="getMovies()">
+					Get Movies
+				</button>		
+			</div>
+			<div class="col-2 text-right">
+				Filter by:		
+			</div>
+			<div class="col-2">
+				<input type="text" ng-model="filtervalue">
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		<table class="table table-hover">
+			<thead class="text-primary">
+				<tr>
+					<td>Movie ID</td>
+					<td>Title</td>
+					<td>Genre</td>
+					<td>Release Year</td>
+					<td>Create Date</td>					
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="movie in movies | filter : filtervalue" ng-click="selectMovie(movie)">
+					<td>{{movie.movieId}}</td>
+					<td>{{movie.title}}</td>
+					<td>{{movie.genre}}</td>
+					<td>{{movie.releaseYear}}</td>
+					<td>{{movie.createDate | limitTo : 10}}</td>			
+				</tr>
+			</tbody>		
+		</table>	
+	</div>
+	<div class="card-footer">
+		Please select a movie for update/delete
+	</div>
+</div>
+<form name="updateForm">
+	<div class="card" ng-hide="showSearch">
+		<div class="card-header">
+			<button class="btn btn-success" ng-click="updateMovie()" ng-disabled="isUpdateButtonDisabled">Update</button>
+			<button class="btn btn-primary" ng-click="deleteMovie()"ng-disabled="isDeleteButtonDisabled">Delete</button>
+			<button class="btn btn-warning" ng-click="cancelMovie()">{{isUpdateButtonDisabled ? 'Return' : 'Cancel'}}</button>
+		</div>
+		<div class="card-body">
+			<table class="table-border">
+				<tr>
+					<td>
+						ID: <span ng-bind="movieToUpdate.movieId"></span>
+					</td>
+				</tr>
+				<tr>
+					<td> 
+						createDate: <span ng-bind="movieToUpdate.createDate"></span>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Genre: <select ng-model="movieToUpdate.genre"
+						ng-options="value for value in genreValues">
+						</select> 
+						
+					</td>
+				</tr>
+				<tr>
+					<td>
+						title: <input type="text" ng-model="movieToUpdate.title">
+					</td>
+				</tr>
+				<tr>
+					<td>
+						release year: <input name="releaseYear" type="number" required  
+						min="{{minReleaseYear}}" max="{{maxReleaseYear}}" ng-model="movieToUpdate.releaseYear">
+						
+						<div class="text-danger">
+							<span ng-show="updateForm.releaseYear.$error.required">
+								Required!
+							</span>
+							<span ng-hide="updateForm.releaseYear.$valid">
+							Must be a number between 1890 and 2020
+							</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p class="text-warning" ng-bind="updateStatus"></p>
+					</td>
+				</tr>
+			</table>
+		
+		</div>
+		<div class="card-fotter">
+		
+		
+		</div>
+	</div>
+</form>
